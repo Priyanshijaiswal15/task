@@ -5,6 +5,17 @@ import HighPriorityIcon from '../assets/Img - High Priority.svg';
 import MediumPriorityIcon from '../assets/Img - Medium Priority.svg';
 import LowPriorityIcon from '../assets/Img - Low Priority.svg';
 
+
+const getUserImage = (userId) => {
+  try {
+    return require(`../assets/${userId}.svg`); 
+  } catch (error) {
+    return require('../assets/Done.svg'); ;
+  }
+};
+
+
+
 const Card = ({ ticket, user }) => {
   const getPriorityIcon = (priority) => {
     switch (priority) {
@@ -20,12 +31,21 @@ const Card = ({ ticket, user }) => {
         return <img src={NoPriorityIcon} alt="No Priority" />;
     }
   };
-
   return (
     <div className="card">
       <div className="card-header">
         <span className="card-id">{ticket.id}</span>
-        <span className="card-user">{user ? user.name : 'Unassigned'}</span>
+        {user ? (
+          <div className="card-user">
+            <img
+              src={getUserImage(user.id) || '../assets/No-priority.svg'}
+              alt={user.name}
+              className="user-image"
+            />
+          </div>
+        ) : (
+          <span className="card-user">Unassigned</span>
+        )}
       </div>
       <div className="card-content">
         <h3>{ticket.title}</h3>
@@ -38,6 +58,7 @@ const Card = ({ ticket, user }) => {
       </div>
     </div>
   );
+  
   
 
 };
